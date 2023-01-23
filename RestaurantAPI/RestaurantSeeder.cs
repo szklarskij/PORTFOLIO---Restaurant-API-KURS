@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using Microsoft.EntityFrameworkCore;
 using RestaurantAPI.Entities;
 
 namespace RestaurantAPI
@@ -14,6 +15,20 @@ namespace RestaurantAPI
         {
             if (_dbContext.Database.CanConnect())
             {
+                var pendingMigrations = _dbContext.Database.GetPendingMigrations();
+                if(pendingMigrations != null && pendingMigrations.Any()) {
+                    _dbContext.Database.Migrate();
+                }
+
+
+                if (!_dbContext.Roles.Any())
+                {
+                    var roles = GetRoles();
+                    _dbContext.Roles.AddRange(roles);
+                    _dbContext.SaveChanges();
+                }
+
+
                 if (!_dbContext.Restaurants.Any())
                 {
                     var restaurants = GetRestaurants();
@@ -22,6 +37,27 @@ namespace RestaurantAPI
                 }
             }
         }
+        private IEnumerable<Role> GetRoles()
+        {
+            var roles = new List<Role>()
+            {
+                new Role()
+                {
+                    Name="User"
+                },
+                new Role()
+                {
+                    Name="Manager"
+                },
+                new Role()
+                {
+                    Name="Admin"
+                },
+
+            };
+            return roles;
+        }
+
         private IEnumerable<Restaurant> GetRestaurants()
         {
             var restaurants = new List<Restaurant>()
@@ -40,12 +76,12 @@ namespace RestaurantAPI
                         {
                             Name = "Nashville Hot Chicken",
                             Price = 10.30M,
-                            Description = "some description"
+
                         },
                         new Dish(){
                             Name = "Chicken Nuggets",
                             Price = 5.30M,
-                            Description = "some description"
+
                         }
                     },
                     Adress = new Adress()
@@ -68,12 +104,12 @@ namespace RestaurantAPI
                         {
                             Name = "Big Mac",
                             Price = 8.30M,
-                            Description = "some description"
+ 
                         },
                         new Dish(){
                             Name = "Cheeseburger",
                             Price = 5.30M,
-                            Description = "some description"
+  
                         }
                     },
                     Adress = new Adress()
