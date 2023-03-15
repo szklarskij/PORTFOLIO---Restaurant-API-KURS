@@ -1,8 +1,9 @@
-# Restaurant-API
+# Restaurant API
 
 ## REST API Entity Framework
 
 Finalny projekt z kursu "Praktyczny kurs ASP.NET Core REST Web API od podstaw (C#) - Jakub Kozera"
+Projekt API z funkcją dodawania użytkowników oraz nadawania im ról w celu zarządania zasobami typu restauracje i dania.
 
 #### Użyte technologie:
 .NET 7 Entity Framework
